@@ -1,0 +1,89 @@
+.dashboard {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-main);
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.station-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.middle-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  min-height: 280px;
+}
+
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.map-panel {
+  padding: 0;
+  min-height: 280px;
+}
+
+.gauge-panel-wrap {
+  display: flex;
+  align-items: center;
+  min-height: 280px;
+}
+
+.chart-row {
+  display: flex;
+  gap: 14px;
+}
+
+@media (max-width: 1100px) {
+  .middle-row {
+    grid-template-columns: 1fr;
+  }
+
+  .station-row {
+    flex-direction: column;
+  }
+
+  .chart-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    min-height: auto;
+    width: 100%;
+    min-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: auto;
+  }
+
+  .nav-item {
+    width: auto;
+    flex-shrink: 0;
+  }
+}
