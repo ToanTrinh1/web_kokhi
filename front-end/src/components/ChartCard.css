@@ -21,6 +21,12 @@
   color: var(--text-primary);
 }
 
+.chart-station-label {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
 .chart-menu-btn {
   background: none;
   border: none;

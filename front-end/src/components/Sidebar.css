@@ -46,6 +46,16 @@
   color: var(--text-primary);
 }
 
+.nav-item,
+.nav-item:visited {
+  text-decoration: none;
+}
+
+.nav-item-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .nav-item.active {
   background: var(--bg-nav-active);
   color: var(--text-primary);

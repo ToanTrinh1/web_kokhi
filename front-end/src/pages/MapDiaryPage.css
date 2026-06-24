@@ -1,0 +1,145 @@
+.map-diary-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.map-diary-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.map-diary-toolbar select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.map-diary-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.map-diary-play:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.map-diary-meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.map-diary-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+
+.map-diary-map-wrap {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 480px;
+  height: calc(100vh - 200px);
+}
+
+.map-diary-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-diary-time-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.map-diary-sidebar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.map-diary-sidebar h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.map-diary-slider {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.map-diary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.map-diary-list li button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.map-diary-list li button:hover,
+.map-diary-list li button.active {
+  color: var(--text-primary);
+  background: rgba(59, 130, 246, 0.08);
+}
+
+@media (max-width: 900px) {
+  .map-diary-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .map-diary-sidebar {
+    max-height: 220px;
+  }
+}

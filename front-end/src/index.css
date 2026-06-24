@@ -22,6 +22,18 @@
   --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+[data-theme="light"] {
+  --bg-main: #eef2f7;
+  --bg-sidebar: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-nav-active: #e2e8f0;
+  --border: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+}
+
 html,
 body,
 #root {
@@ -55,7 +67,7 @@ a {
 }
 
 .leaflet-container {
-  background: #1a2030;
+  background: var(--bg-card);
   border-radius: 8px;
   font-family: var(--font);
 }

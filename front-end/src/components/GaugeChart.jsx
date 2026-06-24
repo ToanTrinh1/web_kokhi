@@ -1,68 +1,68 @@
 import './GaugeChart.css'
 
-function polarToCartesian(cx, cy, r, angleDeg) {
-  const rad = ((angleDeg - 90) * Math.PI) / 180
-  return {
-    x: cx + r * Math.cos(rad),
-    y: cy + r * Math.sin(rad),
-  }
-}
+/** Semi-circle gauge: flat base, arc opens upward (exactly 180°). */
+export default function GaugeChart({ type, value, max = 100, gradientId }) {
+  const cx = 100
+  const cy = 92
+  const r = 72
+  const stroke = 11
+  const clamped = Math.min(Math.max(value, 0), max)
+  const ratio = clamped / max
 
-function describeArc(cx, cy, r, startAngle, endAngle) {
-  const start = polarToCartesian(cx, cy, r, endAngle)
-  const end = polarToCartesian(cx, cy, r, startAngle)
-  const largeArc = endAngle - startAngle <= 180 ? 0 : 1
-  return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y}`
-}
+  const angleRad = Math.PI - ratio * Math.PI
+  const needleLen = r - stroke
+  const needleX = cx + needleLen * Math.cos(angleRad)
+  const needleY = cy - needleLen * Math.sin(angleRad)
 
-export default function GaugeChart({ station }) {
-  const cx = 80
-  const cy = 75
-  const r = 55
-  const value = Math.min(station.gaugeValue, 100)
-  const needleAngle = 180 + (value / 100) * 180
-  const needleTip = polarToCartesian(cx, cy, r - 12, needleAngle)
+  const arcPath = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`
+  const gid = gradientId || `gauge-grad-${type}`
 
   return (
     <div className="gauge-item">
-      <div className="gauge-label-top">{station.name}</div>
-      <svg viewBox="0 0 160 95" className="gauge-svg">
+      <svg viewBox="0 0 200 108" className="gauge-svg" aria-hidden="true">
         <defs>
-          <linearGradient id={`grad-${station.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id={gid} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#4ade80" />
             <stop offset="50%" stopColor="#facc15" />
             <stop offset="100%" stopColor="#f87171" />
           </linearGradient>
         </defs>
         <path
-          d={describeArc(cx, cy, r, 180, 360)}
+          d={arcPath}
           fill="none"
           stroke="#252b3d"
-          strokeWidth="10"
+          strokeWidth={stroke}
           strokeLinecap="round"
         />
         <path
-          d={describeArc(cx, cy, r, 180, 360)}
+          d={arcPath}
           fill="none"
-          stroke={`url(#grad-${station.id})`}
-          strokeWidth="10"
+          stroke={`url(#${gid})`}
+          strokeWidth={stroke}
           strokeLinecap="round"
         />
         <line
           x1={cx}
           y1={cy}
-          x2={needleTip.x}
-          y2={needleTip.y}
+          x2={needleX}
+          y2={needleY}
           stroke="#e2e8f0"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
         />
-        <circle cx={cx} cy={cy} r="4" fill="#e2e8f0" />
-        <text x="12" y="88" fill="#64748b" fontSize="8">0</text>
-        <text x="76" y="14" fill="#64748b" fontSize="8">50</text>
-        <text x="140" y="88" fill="#64748b" fontSize="8">100</text>
+        <circle cx={cx} cy={cy} r="5" fill="#e2e8f0" />
+        <text x={cx - r + 4} y={cy + 14} fill="#64748b" fontSize="9" textAnchor="start">
+          0
+        </text>
+        <text x={cx} y={cy - r + 6} fill="#64748b" fontSize="9" textAnchor="middle">
+          {Math.round(max / 2)}
+        </text>
+        <text x={cx + r - 4} y={cy + 14} fill="#64748b" fontSize="9" textAnchor="end">
+          {max}
+        </text>
       </svg>
-      <div className="gauge-type">{station.gaugeType}</div>
+      <div className="gauge-type">{type}</div>
+      <div className="gauge-value">{clamped}</div>
     </div>
   )
 }

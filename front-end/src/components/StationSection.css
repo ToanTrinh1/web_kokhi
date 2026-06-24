@@ -1,0 +1,29 @@
+.station-section {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(360px, 2fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.station-section:last-child {
+  margin-bottom: 0;
+}
+
+.station-section-left,
+.station-section-right {
+  min-width: 0;
+}
+
+.station-section-left .station-gauge-box {
+  height: 100%;
+}
+
+.station-section-right .chart-card {
+  height: 100%;
+}
+
+@media (max-width: 1100px) {
+  .station-section {
+    grid-template-columns: 1fr;
+  }
+}

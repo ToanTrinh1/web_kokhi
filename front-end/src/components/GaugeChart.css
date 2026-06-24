@@ -6,30 +6,26 @@
   min-width: 0;
 }
 
-.gauge-label-top {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 4px;
-}
-
 .gauge-svg {
   width: 100%;
-  max-width: 160px;
+  max-width: 148px;
+  aspect-ratio: 200 / 108;
   height: auto;
+  display: block;
+  overflow: visible;
 }
 
 .gauge-type {
   font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 2px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  text-align: center;
 }
 
-.gauge-panel {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding: 12px 8px 8px;
-  height: 100%;
+.gauge-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2px;
 }

@@ -10,11 +10,14 @@ export const stations = [
     pm25: 11.2,
     temp: 26.5,
     humidity: 65,
-    gaugeType: 'PM2.5',
-    gaugeValue: 24,
     lat: 10.782,
     lng: 106.698,
     color: '#4ade80',
+    gauges: [
+      { type: 'PM2.5', value: 24, max: 100 },
+      { type: 'PM10', value: 38, max: 100 },
+      { type: 'AQI', value: 24, max: 100 },
+    ],
   },
   {
     id: 2,
@@ -27,11 +30,14 @@ export const stations = [
     pm25: 28.4,
     temp: 28.1,
     humidity: 58,
-    gaugeType: 'PM10',
-    gaugeValue: 58,
     lat: 10.788,
     lng: 106.712,
     color: '#facc15',
+    gauges: [
+      { type: 'PM2.5', value: 58, max: 100 },
+      { type: 'PM10', value: 62, max: 100 },
+      { type: 'AQI', value: 58, max: 100 },
+    ],
   },
   {
     id: 3,
@@ -44,11 +50,14 @@ export const stations = [
     pm25: 19.6,
     temp: 27.3,
     humidity: 62,
-    gaugeType: 'PM10',
-    gaugeValue: 42,
     lat: 10.768,
     lng: 106.705,
     color: '#4ade80',
+    gauges: [
+      { type: 'PM2.5', value: 42, max: 100 },
+      { type: 'PM10', value: 45, max: 100 },
+      { type: 'AQI', value: 42, max: 100 },
+    ],
   },
 ]
 
@@ -69,6 +78,18 @@ export const tempHumChartData = [
   { time: '05 hr', temp: 24, t2: 27, humidity: 72 },
   { time: '8 hr', temp: 29, t2: 30, humidity: 58 },
 ]
+
+export function getStationPmChartData(stationId) {
+  const key = `t${stationId}`
+  return pmChartData.map(({ time, ...rest }) => {
+    const pm10 = rest[key]
+    return {
+      time,
+      pm25: Math.round(pm10 * 0.38),
+      pm10,
+    }
+  })
+}
 
 export function getAqiColor(aqi) {
   if (aqi <= 50) return '#4ade80'

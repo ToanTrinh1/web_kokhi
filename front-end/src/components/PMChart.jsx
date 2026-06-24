@@ -9,45 +9,101 @@ import {
   Legend,
 } from 'recharts'
 import { MoreVertical } from 'lucide-react'
-import { pmChartData } from '../data/mockData'
+import { getStationPmChartData } from '../data/mockData'
 import './ChartCard.css'
 
 const chartStyle = {
   fontSize: 11,
-  fill: '#64748b',
+  fill: 'var(--text-muted)',
 }
 
-export default function PMChart() {
+function mergeChartData(history, forecast) {
+  const base = history?.length ? [...history] : []
+  if (!forecast?.points?.length) return base
+
+  const last = base[base.length - 1]
+  const bridge = last
+    ? [{ ...last, pm25_forecast: last.pm25 }]
+    : []
+
+  const future = forecast.points.map((p) => ({
+    time: p.time,
+    pm25_forecast: p.pm25,
+    forecast: true,
+  }))
+
+  return [...base, ...bridge, ...future]
+}
+
+export default function PMChart({ station, chartData, forecast }) {
+  const raw = chartData?.length ? chartData : getStationPmChartData(station.id)
+  const data = mergeChartData(raw, forecast)
+  const accent = station.color || '#4ade80'
+  const hasForecast = forecast?.sufficient_data && forecast?.points?.length
+
   return (
-    <div className="chart-card">
+    <div className="chart-card chart-card-station">
       <div className="chart-card-header">
-        <h3 className="chart-title">PM2.5/PM10 concentration</h3>
+        <div>
+          <h3 className="chart-title">PM2.5/PM10 concentration</h3>
+          <p className="chart-station-label">{station.name}</p>
+        </div>
         <button type="button" className="chart-menu-btn" aria-label="More options">
           <MoreVertical size={16} />
         </button>
       </div>
       <div className="chart-legend-custom">
-        <span className="legend-line" style={{ color: '#4ade80' }}>● T1</span>
-        <span className="legend-line" style={{ color: '#facc15' }}>● T2</span>
-        <span className="legend-line" style={{ color: '#f87171' }}>● T3</span>
+        <span className="legend-line" style={{ color: accent }}>● PM2.5</span>
+        <span className="legend-line" style={{ color: '#facc15' }}>● PM10</span>
+        {hasForecast && (
+          <span className="legend-line" style={{ color: '#60a5fa' }}>┄ Dự báo PM2.5</span>
+        )}
       </div>
       <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={pmChartData} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
-          <CartesianGrid stroke="#252b3d" strokeDasharray="3 3" vertical={false} />
+        <LineChart data={data} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+          <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
           <XAxis dataKey="time" tick={chartStyle} axisLine={false} tickLine={false} />
-          <YAxis tick={chartStyle} axisLine={false} tickLine={false} domain={[0, 180]} />
+          <YAxis tick={chartStyle} axisLine={false} tickLine={false} domain={[0, 'auto']} />
           <Tooltip
             contentStyle={{
-              background: '#161b28',
-              border: '1px solid #252b3d',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
               borderRadius: 6,
               fontSize: 12,
             }}
           />
           <Legend wrapperStyle={{ display: 'none' }} />
-          <Line type="monotone" dataKey="t1" stroke="#4ade80" strokeWidth={2} dot={false} />
-          <Line type="monotone" dataKey="t2" stroke="#facc15" strokeWidth={2} dot={false} />
-          <Line type="monotone" dataKey="t3" stroke="#f87171" strokeWidth={2} dot={false} />
+          <Line
+            type="monotone"
+            dataKey="pm25"
+            stroke={accent}
+            strokeWidth={2}
+            dot={false}
+            connectNulls={false}
+            isAnimationActive
+            animationDuration={400}
+          />
+          <Line
+            type="monotone"
+            dataKey="pm10"
+            stroke="#facc15"
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive
+            animationDuration={400}
+          />
+          {hasForecast && (
+            <Line
+              type="monotone"
+              dataKey="pm25_forecast"
+              stroke="#60a5fa"
+              strokeWidth={2}
+              strokeDasharray="6 4"
+              dot={false}
+              connectNulls
+              isAnimationActive={false}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>
